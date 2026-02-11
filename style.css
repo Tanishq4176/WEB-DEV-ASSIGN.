@@ -1,0 +1,295 @@
+/* 1. VARIABLES: Defining our color palette */
+:root {
+    --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+    /* Colors from the screenshot */
+    --bg-gradient: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+    /* Blue-ish purple gradient */
+    --card-bg: #ffffff;
+    --text-dark: #333333;
+    --text-muted: #666666;
+    --border-color: #e0e0e0;
+
+    /* Accent Colors */
+    --primary-color: #6a5acd;
+    /* Slate Blue (like the Add Event button) */
+    --primary-hover: #5848c2;
+    --accent-color: #ff6b6b;
+    /* Soft Red (for delete buttons) */
+
+    /* Shadows for that "floating" card look */
+    --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --input-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 2. GLOBAL RESET */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--bg-gradient);
+    /* Matches the blue background in image */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-dark);
+    padding: 20px;
+}
+
+/* 3. MAIN CONTAINER */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    /* Prevents it from getting too wide on huge screens */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.main-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 4. TOP SECTION LAYOUT (Form + List) */
+.top-section {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    /* Left is smaller, Right is wider */
+    gap: 20px;
+}
+
+/* On mobile, stack them vertically */
+@media (max-width: 768px) {
+    .top-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 5. CARD STYLING (Shared style for all white boxes) */
+.card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    /* Subtle border */
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+/* 6. FORM STYLING */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #f9f9f9;
+    transition: border 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.1);
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+    width: 100%;
+    /* Make the "Add Event" button full width */
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+}
+
+/* 7. EVENTS LIST STYLING */
+.events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+/* Remove the H2 border in the header since the container has one */
+.events-header h2 {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-secondary {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.btn-accent {
+    background: var(--primary-color);
+    /* Purple-ish */
+    color: white;
+}
+
+.events-list {
+    min-height: 200px;
+    /* Ensure box has height even if empty */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.empty-message {
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 50px;
+}
+
+/* 8. DYNAMIC EVENT CARD (JavaScript creates this!) */
+.event-card {
+    background: #f8f9fa;
+    border-left: 5px solid var(--primary-color);
+    /* The colored stripe on the left */
+    padding: 15px;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.event-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.event-card .date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.event-card .category {
+    display: inline-block;
+    background: #e6e6fa;
+    /* Light lavender */
+    color: var(--primary-color);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    width: fit-content;
+}
+
+.event-card p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* The little "X" button to delete */
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ffdbdb;
+    color: #d63031;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-btn:hover {
+    background: #ff7675;
+    color: white;
+}
+
+/* 9. DOM DEMO STYLING */
+.comparison-box {
+    background: #f0f0f0;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    /* Makes it look like code */
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+}
+
+.comparison-list {
+    list-style: none;
+    font-size: 0.9rem;
+}
+
+.comparison-list li {
+    margin-bottom: 8px;
+}
+
+.comparison-list strong {
+    color: var(--primary-color);
+}
+
+.interactive-hint {
+    margin-top: 15px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
